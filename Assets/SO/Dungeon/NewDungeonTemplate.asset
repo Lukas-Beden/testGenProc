@@ -1,0 +1,126 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b8706f2c206d3740b69f9e38f0632ac, type: 3}
+  m_Name: NewDungeonTemplate
+  m_EditorClassIdentifier: 
+  seed: 0
+  maxRetries: 50
+  rootNode:
+    rid: 2075300167448789239
+  roomPools: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2075300167448789239
+      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        type: 0
+        children:
+        - rid: 2075300167448789250
+    - rid: 2075300167448789250
+      type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        child:
+          rid: 2075300167448789251
+    - rid: 2075300167448789251
+      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        type: 1
+        children:
+        - rid: 2075300167448789252
+    - rid: 2075300167448789252
+      type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        child:
+          rid: 2075300167448789253
+    - rid: 2075300167448789253
+      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        type: 1
+        children:
+        - rid: 2075300167448789254
+    - rid: 2075300167448789254
+      type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        child:
+          rid: 2075300167448789255
+    - rid: 2075300167448789255
+      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        type: 3
+        children:
+        - rid: 2075300167448789256
+        - rid: 2075300167448789258
+    - rid: 2075300167448789256
+      type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        child:
+          rid: 2075300167448789257
+    - rid: 2075300167448789257
+      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        type: 1
+        children:
+        - rid: 2075300167448789262
+    - rid: 2075300167448789258
+      type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        child:
+          rid: 2075300167448789259
+    - rid: 2075300167448789259
+      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        type: 1
+        children:
+        - rid: 2075300167448789260
+    - rid: 2075300167448789260
+      type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        child:
+          rid: 2075300167448789261
+    - rid: 2075300167448789261
+      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        type: 1
+        children:
+        - rid: 2075300167448789264
+    - rid: 2075300167448789262
+      type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        child:
+          rid: 2075300167448789263
+    - rid: 2075300167448789263
+      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        type: 1
+        children:
+        - rid: 2075300167448789266
+    - rid: 2075300167448789264
+      type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        child:
+          rid: 2075300167448789265
+    - rid: 2075300167448789265
+      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        type: 4
+        children: []
+    - rid: 2075300167448789266
+      type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        child:
+          rid: 2075300167448789267
+    - rid: 2075300167448789267
+      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        type: 2
+        children: []
