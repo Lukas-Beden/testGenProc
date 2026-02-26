@@ -5,5 +5,6 @@ using UnityEngine;
 public class RoomTemplate : ScriptableObject
 {
     [SerializeField] RoomType roomType;
-    [SerializeField] GameObject roomPrefabs;
+    [SerializeField] public GameObject roomPrefabs;
+    [SerializeField] public Vector2 roomSize;
 }

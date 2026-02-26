@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Tresor 3
   m_EditorClassIdentifier: 
   roomType: 4
-  roomPrefabs: {fileID: 0}
+  roomPrefabs: {fileID: 9213408802333275443, guid: 84354ac123b74af47aca38f0936a34a3, type: 3}
+  roomSize: {x: 2, y: 1}

@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Boss 3
   m_EditorClassIdentifier: 
   roomType: 2
-  roomPrefabs: {fileID: 0}
+  roomPrefabs: {fileID: 9213408802333275443, guid: 8947669aa72de014dbc432d19222047d, type: 3}
+  roomSize: {x: 2, y: 1}

@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cda1459e601050409dc1cb81d16b80d, type: 3}
   m_Name: Hub 2
   m_EditorClassIdentifier: 
-  RoomPrefabs: {fileID: 0}
+  roomType: 0
+  roomPrefabs: {fileID: 9213408802333275443, guid: 51c10d0330883744d92c4bcc43c2d5ed, type: 3}
+  roomSize: {x: 1, y: 2}

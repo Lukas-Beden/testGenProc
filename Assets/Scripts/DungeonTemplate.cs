@@ -4,10 +4,6 @@ using UnityEngine;
 
 namespace DungeonGeneration
 {
-    /// <summary>
-    /// ScriptableObject définissant la structure d'un étage de donjon.
-    /// Créer via : Assets > Create > DungeonGeneration > DungeonTemplate
-    /// </summary>
     [CreateAssetMenu(fileName = "NewDungeonTemplate", menuName = "DungeonGeneration/DungeonTemplate")]
     public class DungeonTemplate : ScriptableObject
     {
@@ -26,9 +22,6 @@ namespace DungeonGeneration
         [Header("Pool de RoomTemplates par type")]
         public RoomTypePool[] roomPools;
 
-        /// <summary>
-        /// Retourne toutes les RoomTemplates disponibles pour un type donné.
-        /// </summary>
         public List<RoomTemplate> GetRoomsOfType(RoomType type)
         {
             foreach (var pool in roomPools)
@@ -38,18 +31,11 @@ namespace DungeonGeneration
         }
     }
 
-    // ─────────────────────────────────────────────
-    // Nœud de séquence (structure arborescente)
-    // ─────────────────────────────────────────────
-
     [Serializable]
     public class RoomSequenceNode
     {
         [Tooltip("Type de salle à générer pour ce nœud")]
         public RoomType type = RoomType.Enemy;
-
-        //[Tooltip("Ce nœud fait partie du chemin critique (obligatoire pour progresser)")]
-        //public bool isCriticalPath = true;
 
         [SerializeReference]
         [Tooltip("Connexions vers les nœuds enfants")]
@@ -60,18 +46,8 @@ namespace DungeonGeneration
     public class ChildConnection
     {
         [SerializeReference]
-        public RoomSequenceNode child = new RoomSequenceNode(); // valeur par défaut !
-
-        //[Tooltip("Direction préférée de la connexion (suggestion, pas forcée)")]
-        //public Direction preferredDirection = Direction.South;
-
-        //[Tooltip("Ce lien fait partie du chemin critique")]
-        //public bool isCriticalLink = true;
+        public RoomSequenceNode child = new RoomSequenceNode(); 
     }
-
-    // ─────────────────────────────────────────────
-    // Pool de rooms par type
-    // ─────────────────────────────────────────────
 
     [Serializable]
     public class RoomTypePool
