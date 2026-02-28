@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Hub 1
   m_EditorClassIdentifier: 
   roomType: 0
-  roomPrefabs: {fileID: 9213408802333275443, guid: 1d1542203d14aea459bdaab228a09e3e, type: 3}
+  roomPrefabs: {fileID: 1165466340241972145, guid: e1e8d0a5a7bf3a04584a72b2dd521df6, type: 3}
   roomSize: {x: 1, y: 1}

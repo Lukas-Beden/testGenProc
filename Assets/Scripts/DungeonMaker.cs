@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,94 +10,146 @@ public class DungeonMaker : MonoBehaviour
 {
     [SerializeField] DungeonTemplate _dungeonTemplate;
     Dictionary<Vector2, RoomTemplate> _mapGrid = new();
-    int _roomOffset = -2;
-    int roomSizeToUnityRatio = 12;
+    RoomTemplate[,] roomPlacement;
+    int roomSizeToUnityRatio = 10;
+    int roomMaxSize = 2;
+    int treeDepth;
+    int gridSize;
+    bool autoOffset = false;
+    int manualOffset = 2;
+    int offset;
+
 
     private void Start()
     {
-        Random.InitState(_dungeonTemplate.seed);
-        StartCoroutine(CreateDungeon(Random.Range(0, 10000)));
+        if (autoOffset)
+        {
+            offset = roomMaxSize;
+        } else
+        {
+            offset = manualOffset;
+        }
+        //Random.InitState(_dungeonTemplate.seed);
+        treeDepth = _dungeonTemplate.GetTreeDepth();
+        gridSize = treeDepth * (roomMaxSize + offset) * 2 - 1;
+        Debug.Log(treeDepth + " space " + gridSize);
+        if (_dungeonTemplate.isRandomSeed)
+        {
+            StartCoroutine(CreateDungeon(Random.Range(0, 10000)));
+        } else
+        {
+            StartCoroutine(CreateDungeon(_dungeonTemplate.seed));
+        }
+        
+        
     }
 
     private IEnumerator CreateDungeon(int seed)
     {
         _dungeonTemplate.seed = seed;
 
-        _mapGrid.Clear(); //clear previous dungeon
+        InitGrid(gridSize, gridSize); //clear previous dungeon
         foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
         }
         yield return null;
 
-        SetUpLayout(_dungeonTemplate.rootNode, new Vector2(0, 0), null); //try new dungeon
+        SetUpLayout(_dungeonTemplate.rootNode, new Vector2(gridSize / 2, gridSize / 2), null, Vector2Int.zero);
     }
 
-    private void SetUpLayout(RoomSequenceNode parentRoom, Vector2 startRoomCoords, DoorDirection? exitDoor)
+    private void SetUpLayout(RoomSequenceNode parentRoom, Vector2 startRoomCoords, DoorDirection? exitDoor, Vector2 prevRoomSize)
     {
         List<RoomTemplate> allRoomOfType = _dungeonTemplate.GetRoomsOfType(parentRoom.type); //get all room from a specific type (ennemy, boss etc...)
         RoomTemplate newRoom = null;
         newRoom = allRoomOfType[Random.Range(0, allRoomOfType.Count)]; // get random room from type
 
-        if (!TryPlaceRoom(newRoom, startRoomCoords)) // if dungeon can't be built
+        Vector2 newCoords = new();
+        switch (exitDoor)
         {
-            StartCoroutine(CreateDungeon(Random.Range(0, 10000))); // retry making dungeon
+            case DoorDirection.North:
+                newCoords = new Vector2(startRoomCoords.x, startRoomCoords.y + prevRoomSize.y + offset);
+                break;
+            case DoorDirection.East:
+                newCoords = new Vector2(startRoomCoords.x + prevRoomSize.x + offset, startRoomCoords.y);
+                break;
+            case DoorDirection.South:
+                newCoords = new Vector2(startRoomCoords.x, startRoomCoords.y - newRoom.roomSize.y - offset);
+                break;
+            case DoorDirection.West:
+                newCoords = new Vector2(startRoomCoords.x - newRoom.roomSize.x - offset, startRoomCoords.y);
+                break;
+        }
+
+        if (!TryPlaceRoom(newRoom, newCoords)) // if dungeon can't be built
+        {
+            if (_dungeonTemplate.isRandomSeed)
+            {
+                StartCoroutine(CreateDungeon(Random.Range(0, 10000)));
+            }
+            else
+            {
+                StartCoroutine(CreateDungeon(_dungeonTemplate.seed+1));
+            }
             return;
         }
 
         newRoom.roomPrefabs.GetComponent<DoorsManager>().SetStartDoors(); // reset doors on prefab
         var (exitDoors, entryDoorData) = GetExitDoor(newRoom, parentRoom.children.Count, exitDoor); // get entry door and exit door for the new room
 
-        Vector3 newCoords; // setup where the room will be
-        if (entryDoorData != null)
-        {
-            newCoords = new Vector3((startRoomCoords.x - entryDoorData._activeDoor.GetOffset().x) * roomSizeToUnityRatio, 0, (startRoomCoords.y - entryDoorData._activeDoor.GetOffset().y) * roomSizeToUnityRatio);
-        } else
-        {
-            newCoords = new Vector3(startRoomCoords.x * roomSizeToUnityRatio, 0, startRoomCoords.y * roomSizeToUnityRatio);
-        }
+        Vector2 gridCenter = new Vector2(gridSize / 2f, gridSize / 2f);
+        Vector3 worldPos = new Vector3(
+            (newCoords.x - gridCenter.x) * roomSizeToUnityRatio,
+            0,
+            (newCoords.y - gridCenter.y) * roomSizeToUnityRatio
+        );
+        Instantiate(newRoom.roomPrefabs, worldPos, Quaternion.identity, transform);
 
-        Instantiate(newRoom.roomPrefabs, new Vector3(newCoords.x, 0, newCoords.y), Quaternion.identity, transform); // instantiate new room
-
-        for (int i = 0; i < exitDoors.Count; i++) // recursive call of the function for each exit door in the new room
+        for (int i = 0; i < exitDoors.Count; i++)
         {
-            switch (exitDoors[i]._activeDoor.GetDirection())
-            {
-                case DoorDirection.North:
-                    SetUpLayout(parentRoom.children[i].child, new Vector2(startRoomCoords.x, startRoomCoords.y/* + _roomOffset*/), DoorDirection.North);
-                    break;
-                case DoorDirection.East:
-                    SetUpLayout(parentRoom.children[i].child, new Vector2(startRoomCoords.x/* + _roomOffset*/, startRoomCoords.y), DoorDirection.East);
-                    break;
-                case DoorDirection.South:
-                    SetUpLayout(parentRoom.children[i].child, new Vector2(startRoomCoords.x, startRoomCoords.y/* - _roomOffset*/), DoorDirection.South);
-                    break;
-                case DoorDirection.West:
-                    SetUpLayout(parentRoom.children[i].child, new Vector2(startRoomCoords.x/* - _roomOffset*/, startRoomCoords.y), DoorDirection.West);
-                    break;
-            }
+            SetUpLayout(parentRoom.children[i].child, newCoords, exitDoors[i]._activeDoor.GetDirection(), newRoom.roomSize);
         }
+    }
+
+    private void InitGrid(int width, int height)
+    {
+        roomPlacement = new RoomTemplate[width, height];
     }
 
     private bool TryPlaceRoom(RoomTemplate room, Vector2 startCoords)
     {
-        for (int i = 0; i < room.roomSize.x; i++) // check if a room is already on these coordinates
+        int startX = (int)startCoords.x;
+        int startY = (int)startCoords.y;
+
+        for (int i = 0; i < room.roomSize.x; i++)
         {
             for (int j = 0; j < room.roomSize.y; j++)
             {
-                if (_mapGrid.ContainsKey(new Vector2(startCoords.x + i, startCoords.y + j)))
+                int x = startX + i;
+                int y = startY + j;
+
+                if (x < 0 || y < 0 || x >= roomPlacement.GetLength(0) || y >= roomPlacement.GetLength(1))
                 {
+                    Debug.Log($"outOfRange");
                     return false;
                 }
-            }    
+
+                if (roomPlacement[x, y] != null)
+                {
+                    Debug.Log("dejaUneSalle");
+                    return false;
+                }
+            }
         }
-        for (int i = 0; i < room.roomSize.x; i++) // if there is none, claim the place
+
+        for (int i = 0; i < room.roomSize.x; i++)
         {
             for (int j = 0; j < room.roomSize.y; j++)
             {
-                _mapGrid[new Vector2(startCoords.x + i, startCoords.y + j)] = room;
+                roomPlacement[startX + i, startY + j] = room;
             }
         }
+
         return true;
     }
 

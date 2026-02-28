@@ -8,8 +8,10 @@ namespace DungeonGeneration
     public class DungeonTemplate : ScriptableObject
     {
         [Header("Seed")]
-        [Tooltip("0 = aléatoire à chaque génération")]
         public int seed = 0;
+
+        [Header("Seed")]
+        public bool isRandomSeed = true;
 
         [Header("Paramètres de génération")]
         [Tooltip("Nombre max de tentatives si le layout est impossible")]
@@ -28,6 +30,26 @@ namespace DungeonGeneration
                 if (pool.type == type)
                     return pool.rooms;
             return new List<RoomTemplate>();
+        }
+
+        public int GetTreeDepth()
+        {
+            return GetDepthRecursive(rootNode);
+        }
+
+        private int GetDepthRecursive(RoomSequenceNode node)
+        {
+            if (node == null || node.children.Count == 0) return 1;
+
+            int maxChildDepth = 0;
+            foreach (var connection in node.children)
+            {
+                int childDepth = GetDepthRecursive(connection.child);
+                if (childDepth > maxChildDepth)
+                    maxChildDepth = childDepth;
+            }
+
+            return 1 + maxChildDepth;
         }
     }
 

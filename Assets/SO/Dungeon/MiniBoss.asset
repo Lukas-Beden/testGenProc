@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b8706f2c206d3740b69f9e38f0632ac, type: 3}
-  m_Name: NewDungeonTemplate
+  m_Name: MiniBoss
   m_EditorClassIdentifier: 
-  seed: 4094
+  seed: 1984
+  isRandomSeed: 0
   maxRetries: 50
   rootNode:
     rid: 2075300186128908288
@@ -50,134 +51,68 @@ MonoBehaviour:
       data:
         type: 0
         children:
-        - rid: 2075300188104163386
-    - rid: 2075300188104163386
+        - rid: 2075300259158818927
+    - rid: 2075300259158818927
       type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
       data:
         child:
-          rid: 2075300188104163387
-    - rid: 2075300188104163387
+          rid: 2075300259158818928
+    - rid: 2075300259158818928
       type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
       data:
         type: 1
         children:
-        - rid: 2075300207984640086
-    - rid: 2075300207984640086
+        - rid: 2075300259158818929
+    - rid: 2075300259158818929
       type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
       data:
         child:
-          rid: 2075300207984640087
-    - rid: 2075300207984640087
+          rid: 2075300259158818930
+    - rid: 2075300259158818930
       type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
       data:
         type: 1
         children:
-        - rid: 2075300207984640088
-    - rid: 2075300207984640088
+        - rid: 2075300259158818931
+    - rid: 2075300259158818931
       type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
       data:
         child:
-          rid: 2075300207984640089
-    - rid: 2075300207984640089
-      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
-      data:
-        type: 3
-        children:
-        - rid: 2075300207984640090
-        - rid: 2075300207984640092
-        - rid: 2075300207984640094
-    - rid: 2075300207984640090
-      type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
-      data:
-        child:
-          rid: 2075300207984640091
-    - rid: 2075300207984640091
+          rid: 2075300259158818932
+    - rid: 2075300259158818932
       type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
       data:
         type: 1
         children:
-        - rid: 2075300207984640100
-    - rid: 2075300207984640092
+        - rid: 2075300259158818933
+    - rid: 2075300259158818933
       type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
       data:
         child:
-          rid: 2075300207984640093
-    - rid: 2075300207984640093
+          rid: 2075300259158818934
+    - rid: 2075300259158818934
       type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
       data:
         type: 1
         children:
-        - rid: 2075300207984640098
-    - rid: 2075300207984640094
+        - rid: 2075300259158818935
+    - rid: 2075300259158818935
       type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
       data:
         child:
-          rid: 2075300207984640095
-    - rid: 2075300207984640095
+          rid: 2075300259158818936
+    - rid: 2075300259158818936
       type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
       data:
         type: 1
         children:
-        - rid: 2075300207984640096
-    - rid: 2075300207984640096
+        - rid: 2075300259158818937
+    - rid: 2075300259158818937
       type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
       data:
         child:
-          rid: 2075300207984640097
-    - rid: 2075300207984640097
-      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
-      data:
-        type: 1
-        children:
-        - rid: 2075300207984640102
-    - rid: 2075300207984640098
-      type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
-      data:
-        child:
-          rid: 2075300207984640099
-    - rid: 2075300207984640099
-      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
-      data:
-        type: 1
-        children:
-        - rid: 2075300207984640114
-    - rid: 2075300207984640100
-      type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
-      data:
-        child:
-          rid: 2075300207984640101
-    - rid: 2075300207984640101
-      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
-      data:
-        type: 1
-        children:
-        - rid: 2075300207984640112
-    - rid: 2075300207984640102
-      type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
-      data:
-        child:
-          rid: 2075300207984640103
-    - rid: 2075300207984640103
-      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
-      data:
-        type: 2
-        children: []
-    - rid: 2075300207984640112
-      type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
-      data:
-        child:
-          rid: 2075300207984640113
-    - rid: 2075300207984640113
-      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
-      data:
-        type: 4
-        children: []
-    - rid: 2075300207984640114
-      type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
-      data:
-        child:
-          rid: 2075300207984640115
-    - rid: 2075300207984640115
+          rid: 2075300259158818938
+    - rid: 2075300259158818938
       type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
       data:
         type: 4
