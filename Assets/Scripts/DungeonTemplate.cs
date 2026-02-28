@@ -56,6 +56,17 @@ namespace DungeonGeneration
     [Serializable]
     public class RoomSequenceNode
     {
+        public RoomSequenceNode(RoomType _type) 
+        {
+            type = _type;
+            children = new List<ChildConnection>();
+        }
+        public RoomSequenceNode() 
+        {
+            type = RoomType.Enemy;
+            children = new List<ChildConnection>();
+        }
+
         [Tooltip("Type de salle à générer pour ce nœud")]
         public RoomType type = RoomType.Enemy;
 

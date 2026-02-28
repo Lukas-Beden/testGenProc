@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
 
 public class DungeonMaker : MonoBehaviour
@@ -22,6 +23,7 @@ public class DungeonMaker : MonoBehaviour
 
     private void Start()
     {
+        _dungeonTemplate = Instantiate(_dungeonTemplate);
         if (autoOffset)
         {
             offset = roomMaxSize;
@@ -60,6 +62,10 @@ public class DungeonMaker : MonoBehaviour
 
     private void SetUpLayout(RoomSequenceNode parentRoom, Vector2 startRoomCoords, DoorDirection? exitDoor, Vector2 prevRoomSize)
     {
+        if (parentRoom.type == RoomType.Intersection && parentRoom.children.Count <= 1)
+        {
+            parentRoom.children.Add(new ChildConnection { child = new RoomSequenceNode(RoomType.Tresor) });
+        }
         List<RoomTemplate> allRoomOfType = _dungeonTemplate.GetRoomsOfType(parentRoom.type); //get all room from a specific type (ennemy, boss etc...)
         RoomTemplate newRoom = null;
         newRoom = allRoomOfType[Random.Range(0, allRoomOfType.Count)]; // get random room from type
