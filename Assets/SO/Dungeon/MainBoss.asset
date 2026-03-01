@@ -43,6 +43,11 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 680b4d487a7d3e74fab6196d0fdb251f, type: 2}
     - {fileID: 11400000, guid: 88f9bd7d1f15e4748b4742b8474e8fb8, type: 2}
     - {fileID: 11400000, guid: c3fde4475cd9dd5478c67c2bb26df8ed, type: 2}
+  - type: 5
+    rooms:
+    - {fileID: 11400000, guid: 79a09ffe2fb6069479076ab849b55278, type: 2}
+    - {fileID: 11400000, guid: 15058ae73ede0da40bf9cc9cdebdd3a6, type: 2}
+    - {fileID: 11400000, guid: 0b8f3dd07b805f94babda66c4bbecc28, type: 2}
   references:
     version: 2
     RefIds:
@@ -71,7 +76,7 @@ MonoBehaviour:
     - rid: 2075300259158818930
       type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
       data:
-        type: 1
+        type: 5
         children:
         - rid: 2075300259158818931
     - rid: 2075300259158818931
@@ -82,7 +87,7 @@ MonoBehaviour:
     - rid: 2075300259158818932
       type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
       data:
-        type: 1
+        type: 5
         children:
         - rid: 2075300259158818933
     - rid: 2075300259158818933
@@ -93,7 +98,7 @@ MonoBehaviour:
     - rid: 2075300259158818934
       type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
       data:
-        type: 1
+        type: 5
         children:
         - rid: 2075300259158818935
     - rid: 2075300259158818935

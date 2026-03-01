@@ -1,16 +1,12 @@
 ﻿using DungeonGeneration;
-using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
 
 public class DungeonMaker : MonoBehaviour
 {
-    [SerializeField] DungeonTemplate _dungeonTemplate;
-    Dictionary<Vector2, RoomTemplate> _mapGrid = new();
+    [SerializeField] List<DungeonTemplate> _dungeonTemplate;
+    DungeonTemplate _actualDungeonTemplate;
     RoomTemplate[,] roomPlacement;
     int roomSizeToUnityRatio = 10;
     int roomMaxSize = 2;
@@ -19,36 +15,55 @@ public class DungeonMaker : MonoBehaviour
     bool autoOffset = false;
     int manualOffset = 2;
     int offset;
+    int floor = 0;
+    bool alreadyAnIntersection = false;
+    [Tooltip("1 chance sur : ")]
+    [SerializeField] int probaExtraRoom = 5;
 
 
     private void Start()
     {
-        _dungeonTemplate = Instantiate(_dungeonTemplate);
+        InitDungeon();
+    }
+
+    private void InitDungeon()
+    {
+        _actualDungeonTemplate = Instantiate(_dungeonTemplate[floor]);
         if (autoOffset)
         {
             offset = roomMaxSize;
-        } else
+        }
+        else
         {
             offset = manualOffset;
         }
-        //Random.InitState(_dungeonTemplate.seed);
-        treeDepth = _dungeonTemplate.GetTreeDepth();
+        treeDepth = _actualDungeonTemplate.GetTreeDepth();
         gridSize = treeDepth * (roomMaxSize + offset) * 2 - 1;
         Debug.Log(treeDepth + " space " + gridSize);
-        if (_dungeonTemplate.isRandomSeed)
+        if (_actualDungeonTemplate.isRandomSeed)
         {
             StartCoroutine(CreateDungeon(Random.Range(0, 10000)));
-        } else
-        {
-            StartCoroutine(CreateDungeon(_dungeonTemplate.seed));
         }
-        
-        
+        else
+        {
+            StartCoroutine(CreateDungeon(_actualDungeonTemplate.seed));
+        }
+    }
+
+    public void changeFloor()
+    {
+        floor++;
+        alreadyAnIntersection = false;
+        if (floor >= _dungeonTemplate.Count)
+        {
+            floor = _dungeonTemplate.Count - 1;
+        }
+        InitDungeon();
     }
 
     private IEnumerator CreateDungeon(int seed)
     {
-        _dungeonTemplate.seed = seed;
+        _actualDungeonTemplate.seed = seed;
 
         InitGrid(gridSize, gridSize); //clear previous dungeon
         foreach (Transform child in transform)
@@ -57,16 +72,32 @@ public class DungeonMaker : MonoBehaviour
         }
         yield return null;
 
-        SetUpLayout(_dungeonTemplate.rootNode, new Vector2(gridSize / 2, gridSize / 2), null, Vector2Int.zero);
+        SetUpLayout(_actualDungeonTemplate.rootNode, new Vector2(gridSize / 2, gridSize / 2), null, Vector2Int.zero);
     }
 
     private void SetUpLayout(RoomSequenceNode parentRoom, Vector2 startRoomCoords, DoorDirection? exitDoor, Vector2 prevRoomSize)
     {
+        if (parentRoom.type == RoomType.MAYBE && parentRoom.children.Count <= 1 && !alreadyAnIntersection)
+        {
+            int prob = Random.Range(0, probaExtraRoom);
+            if (prob == 0)
+            {
+                parentRoom.type = RoomType.Intersection;
+                alreadyAnIntersection = true;
+            } else
+            {
+                parentRoom.type = RoomType.Enemy;
+            }
+        } 
+        if (parentRoom.type == RoomType.MAYBE && alreadyAnIntersection)
+        {
+            parentRoom.type = RoomType.Enemy;
+        }
         if (parentRoom.type == RoomType.Intersection && parentRoom.children.Count <= 1)
         {
             parentRoom.children.Add(new ChildConnection { child = new RoomSequenceNode(RoomType.Tresor) });
         }
-        List<RoomTemplate> allRoomOfType = _dungeonTemplate.GetRoomsOfType(parentRoom.type); //get all room from a specific type (ennemy, boss etc...)
+        List<RoomTemplate> allRoomOfType = _actualDungeonTemplate.GetRoomsOfType(parentRoom.type); //get all room from a specific type (ennemy, boss etc...)
         RoomTemplate newRoom = null;
         newRoom = allRoomOfType[Random.Range(0, allRoomOfType.Count)]; // get random room from type
 
@@ -89,13 +120,13 @@ public class DungeonMaker : MonoBehaviour
 
         if (!TryPlaceRoom(newRoom, newCoords)) // if dungeon can't be built
         {
-            if (_dungeonTemplate.isRandomSeed)
+            if (_actualDungeonTemplate.isRandomSeed)
             {
                 StartCoroutine(CreateDungeon(Random.Range(0, 10000)));
             }
             else
             {
-                StartCoroutine(CreateDungeon(_dungeonTemplate.seed+1));
+                StartCoroutine(CreateDungeon(_actualDungeonTemplate.seed+1));
             }
             return;
         }

@@ -4,5 +4,6 @@ public enum RoomType
     Enemy,
     Boss,
     Intersection,
-    Tresor
+    Tresor,
+    MAYBE
 }
