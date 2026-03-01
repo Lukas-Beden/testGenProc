@@ -7,3 +7,15 @@ public enum RoomType
     Tresor,
     MAYBE
 }
+
+//public enum RoomType
+//{
+//    Hub,
+//    Save,
+//    Enemy,
+//    MiniBoss,
+//    MainBoss,
+//    Random, // == MAYBE
+//    Intersection,
+//    Treasure
+//}

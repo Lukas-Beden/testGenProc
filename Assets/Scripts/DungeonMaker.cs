@@ -1,6 +1,8 @@
 ﻿using DungeonGeneration;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DungeonMaker : MonoBehaviour
@@ -19,7 +21,8 @@ public class DungeonMaker : MonoBehaviour
     bool alreadyAnIntersection = false;
     [Tooltip("1 chance sur : ")]
     [SerializeField] int probaExtraRoom = 5;
-
+    [SerializeField] GameObject corridorPrefab;
+    [SerializeField] Transform corridorsContainer;
 
     private void Start()
     {
@@ -37,17 +40,20 @@ public class DungeonMaker : MonoBehaviour
         {
             offset = manualOffset;
         }
-        treeDepth = _actualDungeonTemplate.GetTreeDepth();
+        treeDepth = _dungeonTemplate[floor].GetTreeDepth();
         gridSize = treeDepth * (roomMaxSize + offset) * 2 - 1;
         Debug.Log(treeDepth + " space " + gridSize);
-        if (_actualDungeonTemplate.isRandomSeed)
+        if (_dungeonTemplate[floor].isRandomSeed)
         {
-            StartCoroutine(CreateDungeon(Random.Range(0, 10000)));
+            int randomSeed = UnityEngine.Random.Range(0, 10000);
+            _dungeonTemplate[floor].seed = randomSeed;
+            UnityEngine.Random.InitState(randomSeed);
         }
         else
         {
-            StartCoroutine(CreateDungeon(_actualDungeonTemplate.seed));
+            UnityEngine.Random.InitState(_dungeonTemplate[floor].seed);
         }
+        StartCoroutine(CreateDungeon(_dungeonTemplate[floor].seed));
     }
 
     public void changeFloor()
@@ -63,28 +69,42 @@ public class DungeonMaker : MonoBehaviour
 
     private IEnumerator CreateDungeon(int seed)
     {
-        _actualDungeonTemplate.seed = seed;
+        //_dungeonTemplate[floor].seed = seed;
 
-        InitGrid(gridSize, gridSize); //clear previous dungeon
+        roomPlacement = new RoomTemplate[gridSize, gridSize];
         foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+        foreach (Transform child in corridorsContainer)
         {
             Destroy(child.gameObject);
         }
         yield return null;
 
-        SetUpLayout(_actualDungeonTemplate.rootNode, new Vector2(gridSize / 2, gridSize / 2), null, Vector2Int.zero);
+        SetUpLayout(_actualDungeonTemplate.rootNode, new Vector2(gridSize / 2, gridSize / 2), null, Vector2Int.zero, Vector3.zero);
     }
 
-    private void SetUpLayout(RoomSequenceNode parentRoom, Vector2 startRoomCoords, DoorDirection? exitDoor, Vector2 prevRoomSize)
+    private void SetUpLayout(RoomSequenceNode parentRoom, Vector2 startRoomCoords, PairDoorData? exitDoorData, Vector2 prevRoomSize, Vector3 prevRoomPos)
     {
+        DoorDirection? exitDoor;
+        if (exitDoorData != null)
+        {
+            exitDoor = exitDoorData._activeDoor.GetDirection();
+        } else
+        {
+            exitDoor = null;
+        }
+
         if (parentRoom.type == RoomType.MAYBE && parentRoom.children.Count <= 1 && !alreadyAnIntersection)
         {
-            int prob = Random.Range(0, probaExtraRoom);
+            int prob = UnityEngine.Random.Range(0, probaExtraRoom);
             if (prob == 0)
             {
                 parentRoom.type = RoomType.Intersection;
                 alreadyAnIntersection = true;
-            } else
+            }
+            else
             {
                 parentRoom.type = RoomType.Enemy;
             }
@@ -99,7 +119,7 @@ public class DungeonMaker : MonoBehaviour
         }
         List<RoomTemplate> allRoomOfType = _actualDungeonTemplate.GetRoomsOfType(parentRoom.type); //get all room from a specific type (ennemy, boss etc...)
         RoomTemplate newRoom = null;
-        newRoom = allRoomOfType[Random.Range(0, allRoomOfType.Count)]; // get random room from type
+        newRoom = allRoomOfType[UnityEngine.Random.Range(0, allRoomOfType.Count)]; // get random room from type
 
         Vector2 newCoords = new();
         switch (exitDoor)
@@ -120,14 +140,7 @@ public class DungeonMaker : MonoBehaviour
 
         if (!TryPlaceRoom(newRoom, newCoords)) // if dungeon can't be built
         {
-            if (_actualDungeonTemplate.isRandomSeed)
-            {
-                StartCoroutine(CreateDungeon(Random.Range(0, 10000)));
-            }
-            else
-            {
-                StartCoroutine(CreateDungeon(_actualDungeonTemplate.seed+1));
-            }
+            StartCoroutine(CreateDungeon(_dungeonTemplate[floor].seed + 1));
             return;
         }
 
@@ -140,17 +153,93 @@ public class DungeonMaker : MonoBehaviour
             0,
             (newCoords.y - gridCenter.y) * roomSizeToUnityRatio
         );
-        Instantiate(newRoom.roomPrefabs, worldPos, Quaternion.identity, transform);
+        GameObject newRoomInstance = Instantiate(newRoom.roomPrefabs, worldPos, Quaternion.identity, transform);
+
+        if (exitDoorData != null )
+        {
+            BuildCorridors(prevRoomPos + exitDoorData._activeDoor.gameObject.transform.position, newRoomInstance.transform.position + entryDoorData._activeDoor.gameObject.transform.position);
+        }
 
         for (int i = 0; i < exitDoors.Count; i++)
         {
-            SetUpLayout(parentRoom.children[i].child, newCoords, exitDoors[i]._activeDoor.GetDirection(), newRoom.roomSize);
+            SetUpLayout(parentRoom.children[i].child, newCoords, exitDoors[i], newRoom.roomSize, newRoomInstance.transform.position);
         }
     }
 
-    private void InitGrid(int width, int height)
+    public void BuildCorridors(Vector3 fromPos, Vector3 toPos)
     {
-        roomPlacement = new RoomTemplate[width, height];
+        Vector2 offset = new(
+            fromPos.x < toPos.x ? -0.5f : 0.5f,
+            fromPos.z < toPos.z ? -0.5f : 0.5f
+        );
+        string direction = fromPos.x > toPos.x ? "DROITE->GAUCHE" : fromPos.x < toPos.x ? "GAUCHE->DROITE" : fromPos.z > toPos.z ? "BAS->HAUT" : "HAUT->BAS";
+        Debug.Log($"[{direction}] from:{fromPos} to:{toPos} offsetX:{offset.x} offsetY:{offset.y} midX:{Mathf.Round((fromPos.x + toPos.x) / 2f)} midZ:{Mathf.Round((fromPos.z + toPos.z) / 2f)}");
+
+        if (Mathf.Approximately(fromPos.z, toPos.z))
+        {
+            // Couloir purement horizontal
+            for (float x = Mathf.Min(fromPos.x, toPos.x) + 1; x <= Mathf.Max(fromPos.x, toPos.x) - 1; x += 1)
+            {
+                Instantiate(corridorPrefab, new Vector3(x, fromPos.y, fromPos.z), Quaternion.identity, corridorsContainer);
+            }
+        }
+        else if (Mathf.Approximately(fromPos.x, toPos.x))
+        {
+            // Couloir purement vertical
+            for (float z = Mathf.Min(fromPos.z, toPos.z) + 1; z <= Mathf.Max(fromPos.z, toPos.z) - 1; z += 1)
+            {
+                Instantiate(corridorPrefab, new Vector3(fromPos.x, fromPos.y, z), Quaternion.identity, corridorsContainer);
+            }
+        }
+        else
+        {
+            if (Math.Abs(fromPos.x - toPos.x) > Math.Abs(fromPos.z - toPos.z)) // si horizontal > vertical
+            {
+                float midX = Mathf.Round((fromPos.x + toPos.x) / 2f) + offset.x; // offset appliqué une seule fois ici
+
+                for (float x = Mathf.Min(fromPos.x, midX) + 1; x <= Mathf.Max(fromPos.x, midX) - 1; x += 1) // horizontal 1
+                {
+                    Instantiate(corridorPrefab, new Vector3(x, fromPos.y, fromPos.z), Quaternion.identity, corridorsContainer);
+                }
+
+                Instantiate(corridorPrefab, new Vector3(midX, fromPos.y, fromPos.z), Quaternion.identity, corridorsContainer); // corner 1
+
+                for (float z = Mathf.Min(fromPos.z, toPos.z) + 1; z <= Mathf.Max(fromPos.z, toPos.z) - 1; z += 1) // vertical
+                {
+                    Instantiate(corridorPrefab, new Vector3(midX, fromPos.y, z), Quaternion.identity, corridorsContainer);
+                }
+
+                Instantiate(corridorPrefab, new Vector3(midX, fromPos.y, toPos.z), Quaternion.identity, corridorsContainer); // corner 2
+
+                for (float x = Mathf.Min(midX, toPos.x) + 1; x <= Mathf.Max(midX, toPos.x) - 1; x += 1) // horizontal 2
+                {
+                    Instantiate(corridorPrefab, new Vector3(x, fromPos.y, toPos.z), Quaternion.identity, corridorsContainer);
+                }
+            }
+            else // si vertical > horizontal
+            {
+                float midZ = Mathf.Round((fromPos.z + toPos.z) / 2f) + offset.y; // offset appliqué une seule fois ici
+
+                for (float z = Mathf.Min(fromPos.z, midZ) + 1; z <= Mathf.Max(fromPos.z, midZ) - 1; z += 1) // vertical 1
+                {
+                    Instantiate(corridorPrefab, new Vector3(fromPos.x, fromPos.y, z), Quaternion.identity, corridorsContainer);
+                }
+
+                Instantiate(corridorPrefab, new Vector3(fromPos.x, fromPos.y, midZ), Quaternion.identity, corridorsContainer); // corner 1
+
+                for (float x = Mathf.Min(fromPos.x, toPos.x) + 1; x <= Mathf.Max(fromPos.x, toPos.x) - 1; x += 1) // horizontal
+                {
+                    Instantiate(corridorPrefab, new Vector3(x, fromPos.y, midZ), Quaternion.identity, corridorsContainer);
+                }
+
+                Instantiate(corridorPrefab, new Vector3(toPos.x, fromPos.y, midZ), Quaternion.identity, corridorsContainer); // corner 2
+
+                for (float z = Mathf.Min(midZ, toPos.z) + 1; z <= Mathf.Max(midZ, toPos.z) - 1; z += 1) // vertical 2
+                {
+                    Instantiate(corridorPrefab, new Vector3(toPos.x, fromPos.y, z), Quaternion.identity, corridorsContainer);
+                }
+            }
+        }
     }
 
     private bool TryPlaceRoom(RoomTemplate room, Vector2 startCoords)
@@ -220,7 +309,7 @@ public class DungeonMaker : MonoBehaviour
         if (entrySide != null) // if this is not the 1st room
         {
             DoorTypePool entryPool = unusedPools.Find(pool => pool.type == entrySide); // get the entry and set it active
-            entryDoorData = entryPool.doors[Random.Range(0, entryPool.doors.Count)];
+            entryDoorData = entryPool.doors[UnityEngine.Random.Range(0, entryPool.doors.Count)];
             unusedPools.RemoveAll(pool => pool.type == entrySide);
             doorsManager.SetActiveDoors(entryDoorData);
         }
@@ -229,8 +318,8 @@ public class DungeonMaker : MonoBehaviour
 
         for (int i = 0; i < doorCount; i++) // for each child of the new room, get an exit door
         {
-            DoorTypePool randomPool = unusedPools[Random.Range(0, unusedPools.Count)];
-            PairDoorData randomDoor = randomPool.doors[Random.Range(0, randomPool.doors.Count)];
+            DoorTypePool randomPool = unusedPools[UnityEngine.Random.Range(0, unusedPools.Count)];
+            PairDoorData randomDoor = randomPool.doors[UnityEngine.Random.Range(0, randomPool.doors.Count)];
             usedDoors.Add(randomDoor);
             unusedPools.Remove(randomPool);
         }
