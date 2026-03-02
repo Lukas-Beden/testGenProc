@@ -36,13 +36,19 @@ public class DoorsManager : MonoBehaviour
 
     public void OpenEntryDoor()
     {
-        SetActiveDoors(_entryDoor);
+        // jouer l'animation d'ouverture sur _entrydoor;
     }
+
+    public void CloseEntryDoor()
+    {
+        // jouer l'animation de fermeture sur _entrydoor;
+    }
+
     public void OpenExitDoor()
     { 
         foreach(PairDoorData exitDoor in _exitDoor)
         {
-            SetActiveDoors(exitDoor);
+            // jouer l'animation sur exitdoor;
         }
     }
 }

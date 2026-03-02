@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class DungeonMaker : MonoBehaviour
@@ -100,10 +99,11 @@ public class DungeonMaker : MonoBehaviour
         if (exitDoorData != null)
         {
             exitDoor = exitDoorData._activeDoor.GetDirection();
-        } else
+        }
+        else
         {
             exitDoor = null;
-        }        
+        }
 
         if (parentRoom.type == RoomType.Random && parentRoom.children.Count <= 1 && !alreadyAnIntersection)
         {
@@ -117,7 +117,7 @@ public class DungeonMaker : MonoBehaviour
             {
                 parentRoom.type = RoomType.Enemy;
             }
-        } 
+        }
         if (parentRoom.type == RoomType.Random && alreadyAnIntersection)
         {
             parentRoom.type = RoomType.Enemy;
@@ -168,7 +168,7 @@ public class DungeonMaker : MonoBehaviour
             spawn = newRoomInstance;
         }
 
-        if (exitDoorData != null )
+        if (exitDoorData != null)
         {
             BuildCorridors(prevRoomPos + exitDoorData._activeDoor.gameObject.transform.position, newRoomInstance.transform.position + entryDoorData._activeDoor.gameObject.transform.position);
         }
@@ -186,14 +186,18 @@ public class DungeonMaker : MonoBehaviour
         if (fromPos.x < toPos.x)
         {
             offset.x = -0.5f;
-        } else {
+        }
+        else
+        {
             offset.x = 0.5f;
         }
 
         if (fromPos.z < toPos.z)
         {
             offset.y = -0.5f;
-        } else {
+        }
+        else
+        {
             offset.y = 0.5f;
         }
 
@@ -377,7 +381,7 @@ public class DungeonMaker : MonoBehaviour
 
 
 
-// a mettre sur le playe quand on aura le systeme de deplacement
+// a mettre sur le player quand on aura le systeme de deplacement
 //private void OnTriggerEnter(Collider other)
 //{
 //    other.gameObject.GetComponent<DoorsManager>().OpenEntryDoor();

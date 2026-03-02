@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b8706f2c206d3740b69f9e38f0632ac, type: 3}
   m_Name: FirstFloor
   m_EditorClassIdentifier: 
-  seed: 8970
+  seed: 1350
   isRandomSeed: 1
   maxRetries: 50
   rootNode:

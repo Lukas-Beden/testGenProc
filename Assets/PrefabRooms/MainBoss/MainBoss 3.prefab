@@ -401,6 +401,10 @@ MonoBehaviour:
     doors:
     - _activeDoor: {fileID: 4813563192868729676}
       _inactiveDoor: {fileID: 3453148735963259573}
+  _entryDoor:
+    _activeDoor: {fileID: 3734361731599014111}
+    _inactiveDoor: {fileID: 7923544083005243764}
+  _exitDoor: []
 --- !u!1 &1576001348941652671
 GameObject:
   m_ObjectHideFlags: 0

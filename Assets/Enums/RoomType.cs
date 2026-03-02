@@ -1,13 +1,3 @@
-//public enum RoomType
-//{
-//    Hub,
-//    Enemy,
-//    Boss,
-//    Intersection,
-//    Tresor,
-//    MAYBE
-//}
-
 public enum RoomType
 {
     Hub,
