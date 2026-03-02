@@ -8,6 +8,8 @@ using UnityEngine;
 public class DoorsManager : MonoBehaviour
 {
     [SerializeField] DoorTypePool[] _doorPools;
+    [SerializeField] public PairDoorData _entryDoor;
+    [SerializeField] public PairDoorData[] _exitDoor;
 
     public void SetStartDoors()
     {
@@ -30,6 +32,18 @@ public class DoorsManager : MonoBehaviour
     {
         pair._activeDoor.gameObject.SetActive(true);
         pair._inactiveDoor.gameObject.SetActive(false);
+    }
+
+    public void OpenEntryDoor()
+    {
+        SetActiveDoors(_entryDoor);
+    }
+    public void OpenExitDoor()
+    { 
+        foreach(PairDoorData exitDoor in _exitDoor)
+        {
+            SetActiveDoors(exitDoor);
+        }
     }
 }
 

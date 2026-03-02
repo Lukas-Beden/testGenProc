@@ -401,6 +401,14 @@ MonoBehaviour:
     doors:
     - _activeDoor: {fileID: 4813563192868729676}
       _inactiveDoor: {fileID: 3453148735963259573}
+  _entryDoor:
+    _activeDoor: {fileID: 2887398189566274631}
+    _inactiveDoor: {fileID: 5503238949003104180}
+  _exitDoor:
+  - _activeDoor: {fileID: 4813563192868729676}
+    _inactiveDoor: {fileID: 3453148735963259573}
+  - _activeDoor: {fileID: 1771246673933151992}
+    _inactiveDoor: {fileID: 6774561627310618210}
 --- !u!1 &1576001348941652671
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,7 +867,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6109495909843936440
 Transform:
   m_ObjectHideFlags: 0
@@ -1311,7 +1319,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3526719955867904041
 Transform:
   m_ObjectHideFlags: 0
@@ -2754,7 +2762,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5987846621197464356
 Transform:
   m_ObjectHideFlags: 0
@@ -3248,7 +3256,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5473246969104962963
 Transform:
   m_ObjectHideFlags: 0

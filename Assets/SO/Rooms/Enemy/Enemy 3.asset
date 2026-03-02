@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cda1459e601050409dc1cb81d16b80d, type: 3}
   m_Name: Enemy 3
   m_EditorClassIdentifier: 
-  roomType: 1
+  roomType: 2
   roomPrefabs: {fileID: 1165466340241972145, guid: 511a27678812300449f518d37cf1cef8, type: 3}
   roomSize: {x: 2, y: 1}

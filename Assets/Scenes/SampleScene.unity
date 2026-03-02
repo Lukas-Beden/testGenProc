@@ -341,13 +341,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.70710707, y: -0, z: -0, w: 0.70710653}
+  m_LocalPosition: {x: -250, y: 200, z: -200}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -628,7 +628,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -645, y: 340}
+  m_AnchoredPosition: {x: -308, y: 171}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1188397180
@@ -773,7 +773,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -873,10 +873,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dungeonTemplate:
   - {fileID: 11400000, guid: 85dbe33b305ef1440a3939ca02ad2194, type: 2}
-  - {fileID: 11400000, guid: 42df2eb70b2cae6488d821dd8a6675a0, type: 2}
+  - {fileID: 11400000, guid: 7643b4e131d03ff49a94ac3161581946, type: 2}
+  - {fileID: 11400000, guid: fe752ec513fc15a4b80c0b3f42592579, type: 2}
   probaExtraRoom: 5
   corridorPrefab: {fileID: 2974402645724632768, guid: dcd1578b14856544f8ac2a57256ecbe4, type: 3}
   corridorsContainer: {fileID: 2052406979}
+  player: {fileID: 6527723936259236881, guid: d08348b7542335b4a8d10f52ac5a190e, type: 3}
 --- !u!1 &2052406978
 GameObject:
   m_ObjectHideFlags: 0

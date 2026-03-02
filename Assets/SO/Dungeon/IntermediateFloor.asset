@@ -1,0 +1,134 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b8706f2c206d3740b69f9e38f0632ac, type: 3}
+  m_Name: IntermediateFloor
+  m_EditorClassIdentifier: 
+  seed: 8970
+  isRandomSeed: 1
+  maxRetries: 50
+  rootNode:
+    rid: 2075300186128908288
+  roomPools:
+  - type: 0
+    rooms:
+    - {fileID: 11400000, guid: 336888e619b18d240a897e6053b0bb25, type: 2}
+    - {fileID: 11400000, guid: 132261009ac8e8c4e9e6e8d58dd9bd42, type: 2}
+    - {fileID: 11400000, guid: 0344a88d2e9a4ae41b9c9d3937437e48, type: 2}
+  - type: 1
+    rooms:
+    - {fileID: 11400000, guid: 38ba53fd37acc984d87b6d377e421bc7, type: 2}
+    - {fileID: 11400000, guid: 7403318b06e50b64fbcee94490eace4c, type: 2}
+    - {fileID: 11400000, guid: 97c757499f232d1419589b8a0e7a8c6a, type: 2}
+  - type: 2
+    rooms:
+    - {fileID: 11400000, guid: 1de3d40db1f277a4abde102c2a201d85, type: 2}
+    - {fileID: 11400000, guid: f191e0e271d201e479ae34989232ac01, type: 2}
+    - {fileID: 11400000, guid: 20de5c60591d7af4cb202ddd1501ec1f, type: 2}
+  - type: 3
+    rooms:
+    - {fileID: 11400000, guid: e02788404390bf64b865ec732b71726f, type: 2}
+    - {fileID: 11400000, guid: 4fb9c831d75835b419f48873f2eabec5, type: 2}
+    - {fileID: 11400000, guid: 24a9b7aeabc057146b7e8cdb30c4a8d6, type: 2}
+  - type: 4
+    rooms:
+    - {fileID: 11400000, guid: 41828e79100301b4cb1b1d240c12fcd9, type: 2}
+    - {fileID: 11400000, guid: f3277f969f2d3534088c8a1340188819, type: 2}
+    - {fileID: 11400000, guid: c1a0ee558c368804aa85180b95176e7a, type: 2}
+  - type: 5
+    rooms:
+    - {fileID: 11400000, guid: 79a09ffe2fb6069479076ab849b55278, type: 2}
+    - {fileID: 11400000, guid: 15058ae73ede0da40bf9cc9cdebdd3a6, type: 2}
+    - {fileID: 11400000, guid: 0b8f3dd07b805f94babda66c4bbecc28, type: 2}
+  - type: 6
+    rooms:
+    - {fileID: 11400000, guid: be34302edcf69c84ea43aa272dbff4aa, type: 2}
+    - {fileID: 11400000, guid: 085e234df73fc8c469d88e86576d7430, type: 2}
+    - {fileID: 11400000, guid: 55ea7536311ed524b8f5441c3a7e3231, type: 2}
+  - type: 7
+    rooms:
+    - {fileID: 11400000, guid: 680b4d487a7d3e74fab6196d0fdb251f, type: 2}
+    - {fileID: 11400000, guid: 88f9bd7d1f15e4748b4742b8474e8fb8, type: 2}
+    - {fileID: 11400000, guid: c3fde4475cd9dd5478c67c2bb26df8ed, type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: 2075300186128908288
+      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        type: 1
+        children:
+        - rid: 2075300259158818927
+    - rid: 2075300259158818927
+      type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        child:
+          rid: 2075300259158818928
+    - rid: 2075300259158818928
+      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        type: 2
+        children:
+        - rid: 2075300259158818929
+    - rid: 2075300259158818929
+      type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        child:
+          rid: 2075300259158818930
+    - rid: 2075300259158818930
+      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        type: 5
+        children:
+        - rid: 3361168596042252346
+    - rid: 3361168596042252346
+      type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        child:
+          rid: 3361168596042252347
+    - rid: 3361168596042252347
+      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        type: 5
+        children:
+        - rid: 3361168596042252348
+    - rid: 3361168596042252348
+      type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        child:
+          rid: 3361168596042252349
+    - rid: 3361168596042252349
+      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        type: 5
+        children:
+        - rid: 3361168596042252350
+    - rid: 3361168596042252350
+      type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        child:
+          rid: 3361168596042252351
+    - rid: 3361168596042252351
+      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        type: 2
+        children:
+        - rid: 3361168596042252352
+    - rid: 3361168596042252352
+      type: {class: ChildConnection, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        child:
+          rid: 3361168596042252353
+    - rid: 3361168596042252353
+      type: {class: RoomSequenceNode, ns: DungeonGeneration, asm: Assembly-CSharp}
+      data:
+        type: 3
+        children: []

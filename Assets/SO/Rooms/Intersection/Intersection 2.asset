@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cda1459e601050409dc1cb81d16b80d, type: 3}
   m_Name: Intersection 2
   m_EditorClassIdentifier: 
-  roomType: 3
+  roomType: 6
   roomPrefabs: {fileID: 1165466340241972145, guid: cd2d7445a1ef4184788fb95ca96ce1d4, type: 3}
   roomSize: {x: 1, y: 2}
